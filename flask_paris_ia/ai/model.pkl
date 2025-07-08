@@ -1,0 +1,28 @@
+# ai/train_model.py
+import pandas as pd
+import xgboost as xgb
+import joblib
+from sklearn.model_selection import train_test_split
+
+# 🧪 Dataset fictif – tu peux le remplacer par tes données réelles
+data = pd.DataFrame([
+    {"cote": 1.75, "type": 1, "groupe": 1, "param": 0, "resultat": 1},
+    {"cote": 5.4, "type": 2, "groupe": 1, "param": 0, "resultat": 0},
+    {"cote": 2.3, "type": 1, "groupe": 2, "param": 0, "resultat": 1},
+    {"cote": 1.4, "type": 3, "groupe": 17, "param": 1, "resultat": 0},
+    {"cote": 3.2, "type": 2, "groupe": 1, "param": 0, "resultat": 1}
+])
+
+# 🔀 Séparation des données
+X = data[["cote", "type", "groupe", "param"]]
+y = data["resultat"]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# 🎯 Entraînement du modèle XGBoost
+model = xgb.XGBClassifier()
+model.fit(X_train, y_train)
+
+# 💾 Sauvegarde dans model.pkl
+joblib.dump(model, "ai/model.pkl")
+print("✅ Modèle sauvegardé dans ai/model.pkl")
